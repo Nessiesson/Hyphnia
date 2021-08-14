@@ -1,0 +1,6 @@
+{
+	"minVersion": "0.8",
+	"package": "net.dugged.hyphnia.mixin",
+	"compatibilityLevel": "JAVA_16",
+	"mixins": []
+}

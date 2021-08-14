@@ -1,0 +1,24 @@
+{
+	"schemaVersion": 1,
+	"id": "hyphnia",
+	"version": "${version}",
+	"name": "Hyphnia",
+	"description": "does things",
+	"authors": [
+		"nessie"
+	],
+	"license": "MIT",
+	"icon": "assets/hyphnia/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"net.dugged.hyphnia.HyphniaMod"
+		]
+	},
+	"mixins": [
+		"hyphnia.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.11.3"
+	}
+}
