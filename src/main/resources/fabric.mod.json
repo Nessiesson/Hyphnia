@@ -15,6 +15,7 @@
 			"net.dugged.hyphnia.HyphniaMod"
 		]
 	},
+	"accessWidener": "hyphnia.accesswidener",
 	"mixins": [
 		"hyphnia.mixins.json"
 	],

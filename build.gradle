@@ -18,6 +18,10 @@ dependencies {
 	modRuntime "net.earthcomputer.multiconnect:multiconnect-slim:${project.multiconnect_version}"
 }
 
+loom {
+	accessWidenerPath = file("src/main/resources/hyphnia.accesswidener")
+}
+
 processResources {
 	from "LICENSE"
 	inputs.property "version", project.version

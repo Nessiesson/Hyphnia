@@ -2,5 +2,22 @@
 	"minVersion": "0.8",
 	"package": "net.dugged.hyphnia.mixin",
 	"compatibilityLevel": "JAVA_16",
-	"mixins": []
+	"mixins": [
+		"BossBarHudMixin",
+		"ChickenEntityMixin",
+		"DeathScreenMixin",
+		"GameRenderer_PredicateMixin",
+		"ItemEntityMixin",
+		"MAlwaysAllowCommandsSSP",
+		"MathHelperMixin",
+		"MCreativeMenuFilter",
+		"MInvisibleItemFrames$ItemFrameEntityMixin",
+		"MInvisibleItemFrames$ItemFrameEntityRendererMixin",
+		"MLongerChatMessages$ChatScreenMixin",
+		"MLongerChatMessages$ScreenMixin",
+		"MServerMSPT$InGameHudMixin",
+		"SchemasMixin",
+		"SnowBlockMixin",
+		"SpawnerBlockMixin"
+	]
 }
