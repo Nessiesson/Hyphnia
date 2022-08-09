@@ -1,7 +1,7 @@
 package net.dugged.hyphnia.mixin;
 
-import net.minecraft.client.gui.screen.DeathScreen;
-import net.minecraft.client.gui.widget.ButtonWidget;
+import net.minecraft.client.gui.components.Button;
+import net.minecraft.client.gui.screens.DeathScreen;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -15,10 +15,10 @@ import java.util.List;
 public abstract class DeathScreenMixin {
 	@Shadow
 	@Final
-	private List<ButtonWidget> buttons;
+	private List<Button> exitButtons;
 
 	@Inject(method = "tick", at = @At("RETURN"))
 	private void removeRespawnDelay(final CallbackInfo ci) {
-		this.buttons.forEach(it -> it.active = true);
+		this.exitButtons.forEach(it -> it.active = true);
 	}
 }

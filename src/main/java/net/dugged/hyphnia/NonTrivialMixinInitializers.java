@@ -1,7 +1,5 @@
 package net.dugged.hyphnia;
 
-import net.minecraft.item.ItemGroup;
-import net.minecraft.item.ItemStack;
 
 import java.util.List;
 

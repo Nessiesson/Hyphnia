@@ -1,12 +1,12 @@
 package net.dugged.hyphnia.mixin;
 
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.gui.hud.InGameHud;
-import net.minecraft.text.LiteralText;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
-import net.minecraft.util.math.MathHelper;
+import net.minecraft.ChatFormatting;
+import net.minecraft.client.Minecraft;
+import net.minecraft.client.gui.Gui;
+import net.minecraft.network.chat.CommonComponents;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.util.Mth;
 import org.apache.commons.lang3.StringUtils;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -17,14 +17,22 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 public abstract class MServerMSPT {
-	@Mixin(InGameHud.class)
-	public static abstract class InGameHudMixin {
+	@Mixin(Gui.class)
+	public static abstract class GuiMixin {
 		@Shadow
 		@Final
-		private MinecraftClient client;
+		private Minecraft minecraft;
+
+		@Unique
+		private static int hyphnia$getTicktimeColour(final double mspt) {
+			final double percentage = Mth.clamp(mspt / 50D, 0D, 1D);
+			final int red = (int) Mth.clamp(255D * percentage, 0D, 255D) << 16;
+			final int green = (int) Mth.clamp(255D * 8D - 255D * 8D * percentage, 0D, 255D) << 8;
+			return red | green;
+		}
 
 		@Inject(method = "setOverlayMessage", at = @At("HEAD"), cancellable = true)
-		private void parseDuggedMSPT(final Text message, final boolean tinted, final CallbackInfo ci) {
+		private void parseDuggedMSPT(final Component message, final boolean tinted, final CallbackInfo ci) {
 			final String string = message.getString();
 			if (StringUtils.isNumeric(string)) {
 				final int mspt = Integer.parseInt(string);
@@ -34,23 +42,11 @@ public abstract class MServerMSPT {
 
 				final double tps = Math.min(20D, 1000D / mspt);
 				final Style tickStyle = Style.EMPTY.withColor(hyphnia$getTicktimeColour(mspt));
-				final Text tickInfo = LiteralText.EMPTY.copy()
-						.append(new LiteralText("MSPT: ").formatted(Formatting.GRAY))
-						.append(new LiteralText(String.format("%d", mspt)).setStyle(tickStyle))
-						.append(new LiteralText(" TPS: ").formatted(Formatting.GRAY))
-						.append(new LiteralText(String.format("%.1f", tps)).setStyle(tickStyle));
-
-				this.client.inGameHud.getPlayerListHud().setFooter(tickInfo);
+				final Style grey = Style.EMPTY.withColor(ChatFormatting.GRAY);
+				final Component footer = CommonComponents.joinLines(Component.literal("MSPT: ").setStyle(grey), Component.literal(String.valueOf(mspt)).setStyle(tickStyle), Component.literal(" TPS: ").setStyle(grey), Component.literal(String.format("%.1f", tps)).setStyle(tickStyle));
+				this.minecraft.gui.getTabList().setFooter(footer);
 				ci.cancel();
 			}
-		}
-
-		@Unique
-		private static int hyphnia$getTicktimeColour(final double mspt) {
-			final double percentage = MathHelper.clamp(mspt / 50D, 0D, 1D);
-			final int red = (int) MathHelper.clamp(255D * percentage, 0D, 255D) << 16;
-			final int green = (int) MathHelper.clamp(255D * 8D - 255D * 8D * percentage, 0D, 255D) << 8;
-			return red | green;
 		}
 	}
 }
